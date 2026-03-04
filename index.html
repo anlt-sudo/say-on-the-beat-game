@@ -1,0 +1,812 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thử Thách 99 Ô Số Bí Ẩn</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      :root {
+        --bg-gradient: linear-gradient(135deg, #fff5f8 0%, #ffe4e8 100%);
+        --primary: #d81b60;
+        --secondary: #ff69b4;
+        --text-main: #4a1c2f;
+        --card-bg: #ffffff;
+        --tile-bg: #fff5f8;
+        --tile-border: #ffe4e8;
+        --tile-hover: #ffc1d3;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Nunito", sans-serif;
+      }
+
+      body {
+        background: var(--bg-gradient);
+        color: var(--text-main);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow-x: hidden;
+      }
+
+      h1,
+      h2,
+      h3,
+      .quicksand {
+        font-family: "Quicksand", sans-serif;
+        color: var(--primary);
+      }
+
+      /* --- HEADER & NAVIGATION --- */
+      header {
+        background: rgba(255, 255, 255, 0.9);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 15px rgba(216, 27, 96, 0.05);
+        padding: 15px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo i {
+        color: var(--secondary);
+      }
+
+      .nav-tabs {
+        display: flex;
+        gap: 15px;
+      }
+
+      .tab-btn {
+        background: transparent;
+        border: 2px solid transparent;
+        color: var(--text-main);
+        font-weight: 700;
+        font-size: 16px;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .tab-btn:hover {
+        color: var(--primary);
+        background: var(--tile-bg);
+      }
+
+      .tab-btn.active {
+        background: var(--primary);
+        color: white;
+        box-shadow: 0 4px 10px rgba(216, 27, 96, 0.3);
+      }
+
+      /* --- MAIN CONTENT --- */
+      main {
+        flex: 1;
+        padding: 40px;
+        max-width: 1200px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .view-section {
+        display: none;
+        animation: fadeIn 0.5s ease;
+      }
+
+      .view-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* --- RULES VIEW --- */
+      .rules-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-top: 30px;
+      }
+
+      .rule-card {
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 25px;
+        box-shadow: 0 10px 30px rgba(216, 27, 96, 0.08);
+        border: 2px solid transparent;
+        transition: transform 0.3s;
+      }
+
+      .rule-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--tile-border);
+      }
+
+      .rule-icon {
+        font-size: 40px;
+        color: var(--secondary);
+        margin-bottom: 20px;
+      }
+
+      .rule-card h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      .rule-card p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #666;
+      }
+
+      .hero-banner {
+        text-align: center;
+        margin-bottom: 50px;
+      }
+
+      .hero-banner h1 {
+        font-size: 50px;
+        margin-bottom: 15px;
+      }
+
+      .hero-banner p {
+        font-size: 20px;
+        color: var(--secondary);
+        font-weight: 600;
+      }
+
+      .play-now-btn {
+        margin-top: 30px;
+        background: linear-gradient(45deg, var(--primary), var(--secondary));
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 22px;
+        font-weight: 700;
+        border-radius: 30px;
+        cursor: pointer;
+        font-family: "Quicksand", sans-serif;
+        box-shadow: 0 10px 20px rgba(216, 27, 96, 0.3);
+        transition:
+          transform 0.3s,
+          box-shadow 0.3s;
+      }
+
+      .play-now-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 25px rgba(216, 27, 96, 0.4);
+      }
+
+      /* --- GAME BOARD VIEW --- */
+      .board-header {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .board-header h2 {
+        font-size: 40px;
+        margin-bottom: 10px;
+      }
+
+      .admin-note {
+        background: white;
+        padding: 10px 20px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--primary);
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        font-size: 14px;
+      }
+
+      .random-btn {
+        background: linear-gradient(45deg, var(--secondary), var(--primary));
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: 700;
+        border-radius: 25px;
+        cursor: pointer;
+        font-family: "Quicksand", sans-serif;
+        box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .random-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4);
+      }
+
+      .random-btn i {
+        font-size: 20px;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .number-tile.highlight {
+        animation: pulse 0.5s ease-in-out 3;
+        border-color: var(--secondary);
+        box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+      }
+
+      .number-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 15px;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      .number-tile {
+        background-color: var(--card-bg);
+        border: 3px solid var(--tile-border);
+        border-radius: 15px;
+        color: var(--primary);
+        font-family: "Quicksand", sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        aspect-ratio: 1; /* Makes it a perfect square */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 8px 16px rgba(216, 27, 96, 0.05);
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .number-tile::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--tile-hover);
+        transform: scale(0);
+        border-radius: 17px;
+        transition: transform 0.3s ease;
+        z-index: 0;
+      }
+
+      .number-tile:hover {
+        transform: translateY(-8px) scale(1.05);
+        box-shadow: 0 15px 25px rgba(216, 27, 96, 0.2);
+        border-color: var(--secondary);
+        color: white;
+      }
+
+      .number-tile:hover::before {
+        transform: scale(1);
+      }
+
+      .number-tile span {
+        position: relative;
+        z-index: 1;
+        transition: color 0.3s;
+      }
+
+      .number-tile.played {
+        opacity: 0.5;
+        pointer-events: none;
+        background-color: #f0f0f0;
+        border-color: #ddd;
+        color: #999;
+      }
+
+      /* --- MODAL (POPUP) --- */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+
+      .modal-overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 40px;
+        border-radius: 30px;
+        text-align: center;
+        max-width: 800px;
+        width: 90%;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        transform: scale(0.8);
+        transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .modal-overlay.show .modal-content {
+        transform: scale(1);
+      }
+
+      /* Khung chứa Video chuẩn tỷ lệ 16:9 */
+      .video-container {
+        position: relative;
+        padding-bottom: 56.25%;
+        height: 0;
+        overflow: hidden;
+        border-radius: 15px;
+        margin-bottom: 20px;
+        background-color: #fff5f8;
+        box-shadow: 0 10px 20px rgba(216, 27, 96, 0.15);
+        border: 2px solid var(--tile-border);
+      }
+
+      .video-container iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      .modal-icon {
+        font-size: 60px;
+        color: var(--secondary);
+        margin-bottom: 20px;
+      }
+
+      .modal-content h2 {
+        font-size: 35px;
+        margin-bottom: 10px;
+      }
+
+      .modal-content p {
+        font-size: 18px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+
+      .selected-number-display {
+        font-size: 60px;
+        color: var(--primary);
+        font-family: "Quicksand", sans-serif;
+        font-weight: 800;
+        margin: 20px 0;
+        text-shadow: 2px 2px 0px var(--tile-border);
+      }
+
+      .close-modal-btn {
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 20px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      .close-modal-btn:hover {
+        background: var(--text-main);
+      }
+
+      /* Nút mở tab mới */
+      .external-link-btn {
+        background: var(--secondary);
+        color: white;
+        text-decoration: none;
+        padding: 12px 30px;
+        border-radius: 20px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .external-link-btn:hover {
+        background: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 1200px) {
+        .number-grid {
+          grid-template-columns: repeat(8, 1fr);
+          gap: 12px;
+        }
+        .number-tile {
+          font-size: 24px;
+        }
+      }
+      @media (max-width: 768px) {
+        .number-grid {
+          grid-template-columns: repeat(6, 1fr);
+          gap: 10px;
+        }
+        .number-tile {
+          font-size: 20px;
+        }
+        .nav-tabs {
+          display: none;
+        } /* Hide tabs on very small screens, rely on main button */
+        header {
+          flex-direction: column;
+          gap: 15px;
+        }
+      }
+      @media (max-width: 480px) {
+        .number-grid {
+          grid-template-columns: repeat(5, 1fr);
+          gap: 8px;
+        }
+        .number-tile {
+          font-size: 16px;
+          border-width: 2px;
+        }
+        .timer-container {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <div class="logo quicksand">
+        <i class="fa-solid fa-gamepad"></i> 100 Bí Ẩn
+      </div>
+
+      <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('rules')">
+          Thể Lệ
+        </button>
+        <button class="tab-btn" onclick="switchTab('game')">
+          Bảng Chọn Số
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+      <!-- VIEW: RULES -->
+      <section id="rulesView" class="view-section active">
+        <div class="hero-banner">
+          <h1>Thử Thách 100 Ô Số Bí Ẩn</h1>
+          <p>Chọn con số - Say On The Beat - Rinh trọn điểm số!</p>
+          <button class="play-now-btn" onclick="switchTab('game')">
+            Bắt Đầu Chơi Ngay <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="rules-grid">
+          <div class="rule-card">
+            <div class="rule-icon">
+              <i class="fa-solid fa-clapperboard"></i>
+            </div>
+            <h3>1. Video & Các Vòng</h3>
+            <p>
+              Có 100 Video thử thách thực tế. Mỗi Video gồm
+              <strong>5 Round</strong> liên tiếp. Độ khó sẽ tăng vọt ở Round 4
+              và 5.
+            </p>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon"><i class="fa-solid fa-star"></i></div>
+            <h3>2. Cách Tính Điểm</h3>
+            <p>
+              Mỗi Round hoàn thành mang về <strong>20 điểm</strong>. Tối đa 100
+              điểm/Video. <strong>Cố gắng đạt kết quả cao nhất</strong>.
+            </p>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon"><i class="fa-solid fa-bolt"></i></div>
+            <h3>3. Chiến Thuật Chiến Thắng</h3>
+            <p>
+              Tập trung quan sát kỹ từng Round. Càng về sau độ khó càng tăng,
+              hãy sử dụng thời gian một cách khôn ngoan và không vội vàng.
+            </p>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon"><i class="fa-solid fa-user-secret"></i></div>
+            <h3>4. Quyền Lực Admin</h3>
+            <p>
+              Bí mật nhé: Dù bạn chọn số nào trong 100 số,
+              <strong>Admin</strong> mới là người quyết định mở Video nào cho
+              bạn. Chúc các bạn may mắn!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW: GAME BOARD -->
+      <section id="gameView" class="view-section">
+        <div class="board-header">
+          <h2>Bảng Chọn Số May Mắn</h2>
+          <button class="random-btn" onclick="randomNumber()">
+            <i class="fa-solid fa-dice"></i>
+            Random Số May Mắn
+          </button>
+        </div>
+
+        <div class="number-grid" id="numberGrid">
+          <!-- Javascript will generate 25 buttons here -->
+        </div>
+      </section>
+    </main>
+
+    <!-- MODAL POPUP -->
+    <div class="modal-overlay" id="selectionModal">
+      <div class="modal-content">
+        <h2>
+          Lựa Chọn Số
+          <span
+            id="selectedNumberDisplay"
+            style="
+              color: var(--primary);
+              font-size: 40px;
+              text-shadow: 2px 2px 0px var(--tile-border);
+            "
+            >?</span
+          >
+        </h2>
+
+        <!-- Trình phát Video Google Drive -->
+        <div class="video-container">
+          <iframe
+            id="videoPlayer"
+            src=""
+            allow="autoplay; encrypted-media; fullscreen"
+            allowfullscreen
+            sandbox="allow-scripts allow-same-origin allow-presentation"
+          ></iframe>
+        </div>
+
+        <p style="color: var(--primary); font-weight: 600; margin-top: 15px">
+          📣 Chúc bạn hoàn thành tốt thử thách!
+        </p>
+
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+          "
+        >
+          <a
+            id="externalVideoLink"
+            href="#"
+            target="_blank"
+            class="external-link-btn"
+          >
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Mở Video Trực
+            Tiếp (Nếu lỗi)
+          </a>
+          <button class="close-modal-btn" onclick="closeModal()">
+            Đóng Video
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+      // --- VIEW SWITCHING LOGIC ---
+      function switchTab(tabId) {
+        // Update buttons
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        if (tabId === "rules") {
+          document.querySelectorAll(".tab-btn")[0].classList.add("active");
+        } else {
+          document.querySelectorAll(".tab-btn")[1].classList.add("active");
+        }
+
+        // Update views
+        document
+          .querySelectorAll(".view-section")
+          .forEach((view) => view.classList.remove("active"));
+        document.getElementById(tabId + "View").classList.add("active");
+      }
+
+      // --- GRID GENERATION LOGIC ---
+      const gridContainer = document.getElementById("numberGrid");
+      for (let i = 1; i <= 100; i++) {
+        const tile = document.createElement("div");
+        tile.className = "number-tile";
+        tile.innerHTML = `<span>${i}</span>`;
+        tile.onclick = () => selectNumber(i, tile);
+        gridContainer.appendChild(tile);
+      }
+
+      // --- SELECTION, RANDOM VIDEO & MODAL LOGIC ---
+      let currentSelectedTile = null;
+
+      // DÁN DANH SÁCH LINK VIDEO GOOGLE DRIVE VÀO ĐÂY
+      // Bạn có thể dán thẳng toàn bộ đường link (không cần trích xuất ID).
+      // ⚠️ QUAN TRỌNG: Các video trên Drive PHẢI được set quyền:
+      // 1. Click chuột phải vào file video trên Drive
+      // 2. Chọn "Share" / "Chia sẻ"
+      // 3. Chọn "Anyone with the link" / "Bất kỳ ai có liên kết"
+      // 4. Set quyền là "Viewer" / "Người xem"
+      const rawDriveLinks = [
+        "https://drive.google.com/file/d/1tqfz8S3mxhuhmMi8CM2Y15SXLu8PljFf",
+        "https://drive.google.com/file/d/13LOrZS2LxzVF1Pk2MfQr4jEZs2IleWG8",
+        "https://drive.google.com/file/d/1I1MU07Vl7aDAdL7lY_zwdxsFqN0hcm2S",
+        "https://drive.google.com/file/d/1IiX80SFS3gutOoZc-cJfnt9-Et-JAHu-",
+        "https://drive.google.com/file/d/14BI0uDXVBAcWwBNBsqHq4KYPBSzUEIcT",
+        "https://drive.google.com/file/d/1XEyLZhCnKTeD-M94zQEB-EmzP-UMukpP",
+        "https://drive.google.com/file/d/1G7REnt5S3PWwtRAX5hO64qMXNtdbXh6u",
+        "https://drive.google.com/file/d/1nFMN9pUHESvbQnSleIHQrVqYuj1H-F8M",
+        "https://drive.google.com/file/d/1TX0S4AR10BDLc6TGCZO67b0V6r1mWI0v",
+        "https://drive.google.com/file/d/1c9_eHSnT9XdVqBVlIQtFVSbwHMI427nJ",
+        "https://drive.google.com/file/d/1f23T2J8Sqoiq7O0XuWJG-x0E8BHbVUGA",
+        "https://drive.google.com/file/d/1PdurERCYAam4KkxL5uZB3LwN98c5s8Rz",
+      ];
+
+      // Hàm tự động trích xuất ID từ đường link Drive
+      const driveVideoIds = rawDriveLinks
+        .map((link) => {
+          const match =
+            link.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+            link.match(/id=([a-zA-Z0-9_-]+)/);
+          return match ? match[1] : null;
+        })
+        .filter((id) => id !== null); // Lọc bỏ các link không hợp lệ
+
+      // Tạo mảng để lưu lịch sử 5 video gần nhất
+      let recentVideos = [];
+      const MAX_RECENT = 5; // Số lượt gần nhất không được trùng
+
+      function selectNumber(num, element) {
+        // (ĐÃ XÓA) Không cho bấm lại ô đã chơi - Bây giờ ô nào cũng bấm lại được nhiều lần
+
+        // Ghi số đã chọn lên Popup
+        document.getElementById("selectedNumberDisplay").innerText = num;
+
+        let randomVideoId;
+
+        // Nếu chọn số 100, luôn hiển thị video số 5 (index 4)
+        if (num === 100) {
+          randomVideoId = driveVideoIds[4]; // Video số 5 trong danh sách
+        } else {
+          // Tạo danh sách video có thể chọn (loại trừ 5 video gần nhất)
+          let availableVideos = driveVideoIds.filter(
+            (id) => !recentVideos.includes(id),
+          );
+
+          // Nếu không còn video nào (tất cả đều nằm trong lịch sử gần nhất)
+          // thì cho phép chọn từ toàn bộ danh sách
+          if (availableVideos.length === 0) {
+            availableVideos = [...driveVideoIds];
+            console.log(
+              "Tất cả video đều trong lịch sử gần, mở rộng lựa chọn.",
+            );
+          }
+
+          // Lấy ngẫu nhiên 1 Video từ danh sách khả dụng
+          const randomIndex = Math.floor(
+            Math.random() * availableVideos.length,
+          );
+          randomVideoId = availableVideos[randomIndex];
+        }
+
+        // Cập nhật lịch sử video (chỉ khi không phải số 100)
+        if (num !== 100) {
+          // Thêm video mới vào đầu mảng lịch sử
+          recentVideos.unshift(randomVideoId);
+          // Giữ chỉ 5 video gần nhất
+          if (recentVideos.length > MAX_RECENT) {
+            recentVideos.pop();
+          }
+          console.log("Lịch sử 5 video gần nhất:", recentVideos);
+        }
+
+        // Gắn link nhúng Google Drive vào iFrame (thêm tham số sharing để tránh lỗi quyền)
+        const iframeSrc = `https://drive.google.com/file/d/${randomVideoId}/preview?usp=sharing&rm=minimal`;
+        document.getElementById("videoPlayer").src = iframeSrc;
+
+        // Cập nhật link cho nút xem tab mới
+        const viewSrc = `https://drive.google.com/file/d/${randomVideoId}/view?usp=sharing`;
+        document.getElementById("externalVideoLink").href = viewSrc;
+
+        // Hiện Popup
+        document.getElementById("selectionModal").classList.add("show");
+
+        // Lưu lại ô vừa chọn
+        currentSelectedTile = element;
+      }
+
+      function closeModal() {
+        document.getElementById("selectionModal").classList.remove("show");
+        // Mẹo: Gắn src về rỗng để ép trình duyệt dừng phát âm thanh của video khi đóng popup
+        document.getElementById("videoPlayer").src = "";
+      }
+
+      // --- RANDOM NUMBER FUNCTION ---
+      function randomNumber() {
+        // Random số từ 1-100
+        const randomNum = Math.floor(Math.random() * 100) + 1;
+
+        // Tìm ô số tương ứng
+        const tiles = document.querySelectorAll(".number-tile");
+        const selectedTile = tiles[randomNum - 1];
+
+        // Thêm hiệu ứng highlight
+        selectedTile.classList.add("highlight");
+
+        // Scroll đến ô được chọn
+        selectedTile.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        // Sau 1.5 giây, tự động mở video
+        setTimeout(() => {
+          selectedTile.classList.remove("highlight");
+          selectNumber(randomNum, selectedTile);
+        }, 1500);
+      }
+    </script>
+  </body>
+</html>
