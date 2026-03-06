@@ -468,6 +468,189 @@
         background: var(--primary);
       }
 
+      /* --- RANDOM LOTTERY POPUP --- */
+      .lottery-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 220, 230, 0.6);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+
+      .lottery-overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .lottery-box {
+        background: linear-gradient(
+          135deg,
+          #ffffff 0%,
+          #fff5f8 50%,
+          #ffe4e8 100%
+        );
+        padding: 50px 60px;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow:
+          0 0 60px rgba(216, 27, 96, 0.15),
+          0 20px 50px rgba(216, 27, 96, 0.2);
+        border: 3px solid var(--tile-border);
+        transform: scale(0.5);
+        transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+        min-width: 340px;
+      }
+
+      .lottery-overlay.show .lottery-box {
+        transform: scale(1);
+      }
+
+      .lottery-box::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: conic-gradient(
+          from 0deg,
+          transparent,
+          rgba(255, 105, 180, 0.08),
+          transparent,
+          rgba(216, 27, 96, 0.06),
+          transparent
+        );
+        animation: lotteryRotate 3s linear infinite;
+      }
+
+      @keyframes lotteryRotate {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .lottery-title {
+        font-family: "Quicksand", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+        color: var(--primary);
+        margin-bottom: 15px;
+        position: relative;
+        z-index: 1;
+        text-shadow: none;
+      }
+
+      .lottery-title i {
+        margin-right: 8px;
+        animation: lotteryShake 0.3s ease-in-out infinite;
+      }
+
+      @keyframes lotteryShake {
+        0%,
+        100% {
+          transform: rotate(-10deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+      }
+
+      .lottery-number-display {
+        font-family: "Quicksand", sans-serif;
+        font-size: 120px;
+        font-weight: 800;
+        color: var(--primary);
+        position: relative;
+        z-index: 1;
+        line-height: 1.2;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 2px 2px 0px var(--tile-border);
+        transition: transform 0.1s;
+      }
+
+      .lottery-number-display.final {
+        color: var(--primary);
+        text-shadow:
+          0 0 20px rgba(216, 27, 96, 0.3),
+          2px 2px 0px var(--tile-border);
+        animation: lotteryReveal 0.5s ease;
+      }
+
+      @keyframes lotteryReveal {
+        0% {
+          transform: scale(1.5);
+          opacity: 0;
+        }
+        50% {
+          transform: scale(0.9);
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .lottery-subtitle {
+        font-family: "Nunito", sans-serif;
+        font-size: 16px;
+        color: #999;
+        margin-top: 10px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .lottery-subtitle.done {
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 18px;
+      }
+
+      .lottery-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+
+      .lottery-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--secondary);
+        border-radius: 50%;
+        animation: particleFloat 2s ease-in-out infinite;
+      }
+
+      @keyframes particleFloat {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateY(0) scale(0);
+        }
+        50% {
+          opacity: 1;
+          transform: translateY(-80px) scale(1);
+        }
+      }
+
       /* Responsive */
       @media (max-width: 1200px) {
         .number-grid {
@@ -563,8 +746,7 @@
             <div class="rule-icon"><i class="fa-solid fa-bolt"></i></div>
             <h3>3. Chiến Thuật Chiến Thắng</h3>
             <p>
-              Tập trung quan sát kỹ từng Round. Càng về sau độ khó càng tăng,
-              hãy sử dụng thời gian một cách khôn ngoan và không vội vàng.
+              Tập trung quan sát kỹ từng Round. Càng về sau độ khó càng tăng.
             </p>
           </div>
           <div class="rule-card">
@@ -572,8 +754,8 @@
             <h3>4. Quyền Lực Admin</h3>
             <p>
               Bí mật nhé: Dù bạn chọn số nào trong 100 số,
-              <strong>Admin</strong> mới là người quyết định mở Video nào cho
-              bạn. Chúc các bạn may mắn!
+              <strong>Admin</strong> không phải là người quyết định mở Video nào
+              cho bạn. Chúc các bạn may mắn!
             </p>
           </div>
         </div>
@@ -651,6 +833,20 @@
       </div>
     </div>
 
+    <!-- LOTTERY RANDOM POPUP -->
+    <div class="lottery-overlay" id="lotteryOverlay">
+      <div class="lottery-box">
+        <div class="lottery-particles" id="lotteryParticles"></div>
+        <div class="lottery-title">
+          <i class="fa-solid fa-dice"></i> ĐANG QUAY SỐ...
+        </div>
+        <div class="lottery-number-display" id="lotteryNumber">?</div>
+        <div class="lottery-subtitle" id="lotterySubtitle">
+          Chờ số may mắn của bạn...
+        </div>
+      </div>
+    </div>
+
     <!-- JAVASCRIPT LOGIC -->
     <script>
       // --- VIEW SWITCHING LOGIC ---
@@ -708,7 +904,7 @@
         "https://drive.google.com/file/d/1Er4pfyb36yPMeJPe5ZH4inPEdCFqh2F-",
         "https://drive.google.com/file/d/1a2vMaEXyU9eXA9HMUoqq1OIsOLOogseG",
         "https://drive.google.com/file/d/18gsjeHabPfQURiH0f0LKh_KO3sEkr8Si",
-        "https://drive.google.com/file/d/1gspEipHx75zC--gFdCg70weIlKEQH4td"
+        "https://drive.google.com/file/d/1gspEipHx75zC--gFdCg70weIlKEQH4td",
       ];
 
       // Hàm tự động trích xuất ID từ đường link Drive
@@ -790,26 +986,214 @@
         document.getElementById("videoPlayer").src = "";
       }
 
-      // --- RANDOM NUMBER FUNCTION ---
+      // --- LOTTERY SOUND ENGINE (Web Audio API) ---
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      let audioCtx = null;
+
+      function ensureAudioCtx() {
+        if (!audioCtx) audioCtx = new AudioCtx();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+        return audioCtx;
+      }
+
+      // Tiếng "tích" cho mỗi lần đổi số
+      function playTick(pitch) {
+        const ctx = ensureAudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 800 + pitch * 400; // cao dần
+        gain.gain.setValueAtTime(0.15, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.06);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime);
+        osc.stop(ctx.currentTime + 0.06);
+      }
+
+      // Tiếng "DING" kết thúc
+      function playFinalDing() {
+        const ctx = ensureAudioCtx();
+        // Note 1
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = "sine";
+        osc1.frequency.value = 1200;
+        gain1.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain1.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(ctx.currentTime);
+        osc1.stop(ctx.currentTime + 0.6);
+        // Note 2 (harmony)
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = "triangle";
+        osc2.frequency.value = 1500;
+        gain2.gain.setValueAtTime(0.2, ctx.currentTime + 0.05);
+        gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(ctx.currentTime + 0.05);
+        osc2.stop(ctx.currentTime + 0.8);
+        // Note 3 (high sparkle)
+        const osc3 = ctx.createOscillator();
+        const gain3 = ctx.createGain();
+        osc3.type = "sine";
+        osc3.frequency.value = 1800;
+        gain3.gain.setValueAtTime(0.15, ctx.currentTime + 0.1);
+        gain3.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.0);
+        osc3.connect(gain3);
+        gain3.connect(ctx.destination);
+        osc3.start(ctx.currentTime + 0.1);
+        osc3.stop(ctx.currentTime + 1.0);
+      }
+
+      // Tiếng drum roll nền
+      function playDrumRoll(duration) {
+        const ctx = ensureAudioCtx();
+        const bufferSize = ctx.sampleRate * duration;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          // Tạo tiếng noise nhẹ giống drum roll
+          const envelope = Math.sin((i / bufferSize) * Math.PI); // fade in-out
+          const tremolo = 0.5 + 0.5 * Math.sin(i / (ctx.sampleRate * 0.02)); // rung 50Hz
+          data[i] = (Math.random() * 2 - 1) * 0.08 * envelope * tremolo;
+        }
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.value = 300;
+        filter.Q.value = 1;
+        source.connect(filter);
+        filter.connect(ctx.destination);
+        source.start(ctx.currentTime);
+      }
+
+      // --- Tạo particles cho lottery box ---
+      function createLotteryParticles() {
+        const container = document.getElementById("lotteryParticles");
+        container.innerHTML = "";
+        for (let i = 0; i < 20; i++) {
+          const p = document.createElement("div");
+          p.className = "lottery-particle";
+          p.style.left = Math.random() * 100 + "%";
+          p.style.bottom = "10%";
+          p.style.animationDelay = Math.random() * 2 + "s";
+          p.style.animationDuration = 1.5 + Math.random() + "s";
+          p.style.background = [
+            "#ff69b4",
+            "#ffd700",
+            "#d81b60",
+            "#fff",
+            "#ff1493",
+          ][Math.floor(Math.random() * 5)];
+          p.style.width = 3 + Math.random() * 4 + "px";
+          p.style.height = p.style.width;
+          container.appendChild(p);
+        }
+      }
+
+      // --- RANDOM NUMBER FUNCTION (with lottery animation) ---
+      let isLotteryRunning = false;
+
       function randomNumber() {
-        // Random số từ 1-100
-        const randomNum = Math.floor(Math.random() * 100) + 1;
+        if (isLotteryRunning) return; // Chặn bấm nhiều lần
+        isLotteryRunning = true;
 
-        // Tìm ô số tương ứng
-        const tiles = document.querySelectorAll(".number-tile");
-        const selectedTile = tiles[randomNum - 1];
+        const finalNum = Math.floor(Math.random() * 100) + 1;
+        const overlay = document.getElementById("lotteryOverlay");
+        const numDisplay = document.getElementById("lotteryNumber");
+        const subtitle = document.getElementById("lotterySubtitle");
+        const title = document.querySelector(".lottery-title");
 
-        // Thêm hiệu ứng highlight
-        selectedTile.classList.add("highlight");
+        // Reset trạng thái
+        numDisplay.classList.remove("final");
+        numDisplay.textContent = "?";
+        subtitle.textContent = "Chờ số may mắn của bạn...";
+        subtitle.classList.remove("done");
+        title.innerHTML = '<i class="fa-solid fa-dice"></i> ĐANG QUAY SỐ...';
+        createLotteryParticles();
 
-        // Scroll đến ô được chọn
-        selectedTile.scrollIntoView({ behavior: "smooth", block: "center" });
+        // Hiện popup
+        overlay.classList.add("show");
 
-        // Sau 1.5 giây, tự động mở video
-        setTimeout(() => {
-          selectedTile.classList.remove("highlight");
-          selectNumber(randomNum, selectedTile);
-        }, 1500);
+        // Phát drum roll nền
+        playDrumRoll(3.2);
+
+        // --- Hiệu ứng lọc số ---
+        const totalDuration = 3000; // 3 giây
+        const startTime = Date.now();
+        let tickCount = 0;
+
+        function animateNumbers() {
+          const elapsed = Date.now() - startTime;
+          const progress = elapsed / totalDuration; // 0 → 1
+
+          if (progress >= 1) {
+            // KẾT THÚC - hiển thị số cuối cùng
+            numDisplay.textContent = finalNum;
+            numDisplay.classList.add("final");
+            title.innerHTML = '<i class="fa-solid fa-star"></i> SỐ MAY MẮN!';
+            subtitle.textContent = "🎉 Đã tìm được số của bạn!";
+            subtitle.classList.add("done");
+            playFinalDing();
+
+            // Sau 1.2 giây, đóng lottery popup và mở video
+            setTimeout(() => {
+              overlay.classList.remove("show");
+              isLotteryRunning = false;
+
+              // Tìm ô số tương ứng
+              const tiles = document.querySelectorAll(".number-tile");
+              const selectedTile = tiles[finalNum - 1];
+
+              // Highlight & scroll
+              selectedTile.classList.add("highlight");
+              selectedTile.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+
+              setTimeout(() => {
+                selectedTile.classList.remove("highlight");
+                selectNumber(finalNum, selectedTile);
+              }, 800);
+            }, 1200);
+            return;
+          }
+
+          // Tốc độ đổi số: nhanh ở đầu, chậm dần ở cuối
+          // Interval: từ 30ms → 250ms
+          const interval = 30 + 220 * Math.pow(progress, 2.5);
+
+          // Chọn số ngẫu nhiên hiển thị (gần cuối sẽ gần số thật)
+          let displayNum;
+          if (progress > 0.85) {
+            // Gần cuối: dao động quanh số cuối cùng ±5
+            const range = Math.ceil((5 * (1 - progress)) / 0.15);
+            displayNum =
+              finalNum + Math.floor(Math.random() * (range * 2 + 1)) - range;
+            displayNum = Math.max(1, Math.min(100, displayNum));
+          } else {
+            displayNum = Math.floor(Math.random() * 100) + 1;
+          }
+
+          numDisplay.textContent = displayNum;
+          // Hiệu ứng rung nhẹ
+          numDisplay.style.transform = `scale(${1 + Math.random() * 0.08}) rotate(${(Math.random() - 0.5) * 4}deg)`;
+
+          // Phát tick sound
+          playTick(progress);
+          tickCount++;
+
+          setTimeout(animateNumbers, interval);
+        }
+
+        // Bắt đầu sau 200ms để popup kịp hiện
+        setTimeout(animateNumbers, 200);
       }
     </script>
   </body>
